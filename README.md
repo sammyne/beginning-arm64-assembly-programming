@@ -34,3 +34,6 @@ aarch64-none-linux-gnu-gcc -gdwarf -o hello.out -no-pie hello.o --static
 qemu-aarch64 ./hello.out
 hello, worldroot@cf9d0cd4ead9:/workspace/chapter01#
 ```
+
+## 2. 参考文献
+- [multiarch/qemu-user-static](https://github.com/multiarch/qemu-user-static)
