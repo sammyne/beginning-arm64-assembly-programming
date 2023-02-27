@@ -36,7 +36,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.tencent.com/g' /etc/apt/sources.list &&
   sed -i 's/security.ubuntu.com/mirrors.tencent.com/g' /etc/apt/sources.list
 
 RUN apt update                                  &&\
-  apt install -y make                           &&\
+  apt install -y make gdb-multiarch             &&\
   apt clean                                     &&\
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
