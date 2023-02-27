@@ -37,3 +37,4 @@ hello, worldroot@cf9d0cd4ead9:/workspace/chapter01#
 
 ## 2. 参考文献
 - [multiarch/qemu-user-static](https://github.com/multiarch/qemu-user-static)
+- [Learn the architecture - A64 Instruction Set Architecture](https://developer.arm.com/documentation/102374/0101)
