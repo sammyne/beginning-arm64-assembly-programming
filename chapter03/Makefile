@@ -3,8 +3,6 @@ ARM64GNU=aarch64-none-linux-gnu-
 AS=$(ARM64GNU)as
 CC=$(ARM64GNU)gcc
 
-QEMU_LD_PREFIX=/opt/gcc-arm/aarch64-none-linux-gnu
-
 srcs = $(shell find $(SRCDIR) -name "*.s")
 
 apps = $(srcs:./%.s=%)
@@ -15,22 +13,23 @@ debugs = $(apps:%=debug-%)
 .PHONY: all
 all: $(apps)
 
-#	$(CC) -gdwarf -o $@.out -no-pie $@.o --static
 $(apps): %: %.s
 	$(AS) -a=$@.lst -g --gdwarf-5 -o $@.o $^
 	$(CC) -gdwarf -o $@.out -no-pie $@.o --static
 	qemu-aarch64 ./$@.out
 
+# ref: https://stackoverflow.com/a/51310791/10878967
 $(up4debugs): up4debug-%: %
-	qemu-aarch64 -L $(QEMU_LD_PREFIX) -g 1234 $^.out
+	qemu-aarch64 -g 1234 $^.out
 
+# ref: https://stackoverflow.com/a/51310791/10878967
+#  sysroot seems to be not required
+#		-ex 'set sysroot /opt/gcc-arm/aarch64-none-linux-gnu' \ 
 $(debugs): debug-%: %
-	gdb-multiarch -q --nh \
-		-ex 'set architecture aarch64' \
-		-ex 'set sysroot /opt/gcc-arm/aarch64-none-linux-gnu' \
-		-ex 'file $^.out' \
+	gdb-multiarch -q --nh 							\
+		-ex 'set architecture aarch64' 		\
+		-ex 'file $^.out' 								\
 		-ex 'target remote localhost:1234'
-
 
 .PHONY: clean
 clean:
